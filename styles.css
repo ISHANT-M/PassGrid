@@ -215,6 +215,29 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 .export-row{margin-top:16px;}
 
 
+/* Reserved advertising space: quiet, separate from all tool controls */
+.ad-placement{
+  min-height:90px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:#F2F2EE;
+  color:var(--ink-soft);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:14px;
+  text-align:center;
+  font-size:0.78rem;
+}
+.ad-label{
+  color:#7B828D;
+  font-size:0.66rem;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+
 /* Supporting content */
 .info-section{
   border-top:1px solid var(--line);
