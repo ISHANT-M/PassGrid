@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PassGrid — Passport Photo Grid Maker</title>
+<meta name="description" content="Upload a photo, auto-crop it to any passport photo size with face detection, arrange it in a print-ready grid, and download a PDF or JPEG." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <img src="assets/logo.svg" alt="" class="brand-mark" />
+    <span class="brand-name">PassGrid</span>
+  </div>
+  <p class="tagline">Passport photos, cropped, centered and gridded for printing.</p>
+</header>
+
+<main class="layout">
+
+  <!-- STEP 1: UPLOAD -->
+  <section class="panel" id="panel-upload">
+    <h2><span class="step-num">1</span> Upload a photo</h2>
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="file-input" accept="image/*" hidden />
+      <div class="dropzone-inner" id="dropzone-inner">
+        <p class="dropzone-title">Drop an image here or click to choose one</p>
+        <p class="dropzone-hint">JPEG or PNG. Use a plain background and even lighting for best results.</p>
+      </div>
+      <canvas id="preview-canvas" hidden></canvas>
+    </div>
+    <div class="row" id="upload-actions" hidden>
+      <button class="btn-secondary" id="btn-change-photo">Choose a different photo</button>
+      <label class="checkbox-row">
+        <input type="checkbox" id="toggle-enhance" />
+        Fix and enhance photo (brightness, contrast, sharpness)
+      </label>
+    </div>
+    <p class="status-line" id="detect-status"></p>
+  </section>
+
+  <!-- STEP 2: SIZE -->
+  <section class="panel" id="panel-size">
+    <h2><span class="step-num">2</span> Choose a photo size</h2>
+    <div class="preset-grid" id="preset-grid"></div>
+    <details class="custom-size">
+      <summary>Use a custom size instead</summary>
+      <div class="row">
+        <label>Width <input type="number" id="custom-w" min="10" step="0.1" value="35" /> mm</label>
+        <label>Height <input type="number" id="custom-h" min="10" step="0.1" value="45" /> mm</label>
+        <button class="btn-secondary" id="btn-apply-custom">Use this size</button>
+      </div>
+    </details>
+  </section>
+
+  <!-- STEP 3: PAPER + GRID -->
+  <section class="panel" id="panel-paper">
+    <h2><span class="step-num">3</span> Choose paper and layout</h2>
+    <div class="row">
+      <label>Paper size
+        <select id="paper-select">
+          <option value="4x6" data-w="101.6" data-h="152.4">4×6 in (postcard print)</option>
+          <option value="A4" data-w="210" data-h="297" selected>A4</option>
+          <option value="letter" data-w="215.9" data-h="279.4">US Letter</option>
+          <option value="5x7" data-w="127" data-h="177.8">5×7 in</option>
+        </select>
+      </label>
+      <label>Margin
+        <select id="margin-select">
+          <option value="5">Narrow (5mm)</option>
+          <option value="10" selected>Normal (10mm)</option>
+          <option value="15">Wide (15mm)</option>
+        </select>
+      </label>
+      <label>Spacing between photos
+        <select id="gap-select">
+          <option value="0">None</option>
+          <option value="2" selected>2mm</option>
+          <option value="4">4mm</option>
+        </select>
+      </label>
+    </div>
+    <label class="checkbox-row">
+      <input type="checkbox" id="toggle-guides" checked />
+      Show cut guide lines around each photo
+    </label>
+    <p class="grid-summary" id="grid-summary"></p>
+  </section>
+
+  <!-- Ad slot: a single, static banner. See PRIVATE_NOTES.md for how to
+       wire up a real ad network here without making the tool annoying. -->
+  <div class="ad-slot">
+    <div class="ad-slot-inner" id="ad-slot">
+      <span class="ad-slot-label">Sponsored</span>
+      <span id="ad-slot-content">Ad space — replace this block with your ad network's snippet.</span>
+    </div>
+  </div>
+
+  <!-- STEP 4: PREVIEW + EXPORT -->
+  <section class="panel" id="panel-output">
+    <h2><span class="step-num">4</span> Preview and download</h2>
+    <div class="output-wrap">
+      <canvas id="output-canvas"></canvas>
+    </div>
+    <div class="row export-row">
+      <button class="btn-primary" id="btn-download-pdf">Download PDF grid</button>
+      <button class="btn-secondary" id="btn-download-jpeg">Download single photo (JPEG)</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>All processing happens in your browser. Nothing you upload is sent anywhere.</p>
+  <p>Developed by Ishant Mehndiratta — <a href="https://github.com/ISHANT-M" target="_blank" rel="noopener">github.com/ISHANT-M</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
