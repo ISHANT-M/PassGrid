@@ -157,6 +157,10 @@ el("btn-apply-custom").addEventListener("click", () => {
 /* ------------------------------------------------------------ paper ---- */
 
 const paperSelect = el("paper-select");
+const marginSelect = el("margin-select");
+const gapSelect = el("gap-select");
+const paperCustomStatus = el("paper-custom-status");
+
 paperSelect.addEventListener("change", () => {
   const opt = paperSelect.selectedOptions[0];
   state.paper = { w: parseFloat(opt.dataset.w), h: parseFloat(opt.dataset.h) };
@@ -164,12 +168,37 @@ paperSelect.addEventListener("change", () => {
 });
 state.paper = { w: 210, h: 297 };
 
-el("margin-select").addEventListener("change", e => {
+marginSelect.addEventListener("change", e => {
   state.marginMM = parseFloat(e.target.value);
   rebuildOutput();
 });
-el("gap-select").addEventListener("change", e => {
+gapSelect.addEventListener("change", e => {
   state.gapMM = parseFloat(e.target.value);
+  rebuildOutput();
+});
+el("btn-apply-paper-custom").addEventListener("click", () => {
+  const w = parseFloat(el("custom-paper-w").value);
+  const h = parseFloat(el("custom-paper-h").value);
+  const margin = parseFloat(el("custom-margin").value);
+  const gap = parseFloat(el("custom-gap").value);
+  if (![w, h, margin, gap].every(Number.isFinite) || w < 20 || h < 20 || margin < 0 || gap < 0) {
+    paperCustomStatus.textContent = "Enter valid dimensions. Paper must be at least 20 mm on each side; margin and spacing cannot be negative.";
+    paperCustomStatus.className = "field-message warn";
+    return;
+  }
+  if (margin * 2 >= w || margin * 2 >= h) {
+    paperCustomStatus.textContent = "The margin is too large for this paper size.";
+    paperCustomStatus.className = "field-message warn";
+    return;
+  }
+  state.paper = { w, h };
+  state.marginMM = margin;
+  state.gapMM = gap;
+  paperSelect.value = "custom";
+  marginSelect.value = "custom";
+  gapSelect.value = "custom";
+  paperCustomStatus.textContent = `Using ${w} × ${h} mm paper with ${margin} mm margins and ${gap} mm spacing.`;
+  paperCustomStatus.className = "field-message ok";
   rebuildOutput();
 });
 el("toggle-guides").addEventListener("change", rebuildOutput);
@@ -292,27 +321,39 @@ function computeGrid() {
   const preset = state.selectedPreset;
   const usableW = state.paper.w - 2 * state.marginMM;
   const usableH = state.paper.h - 2 * state.marginMM;
-  const cols = Math.max(1, Math.floor((usableW + state.gapMM) / (preset.w + state.gapMM)));
-  const rows = Math.max(1, Math.floor((usableH + state.gapMM) / (preset.h + state.gapMM)));
+  const cols = Math.max(0, Math.floor((usableW + state.gapMM) / (preset.w + state.gapMM)));
+  const rows = Math.max(0, Math.floor((usableH + state.gapMM) / (preset.h + state.gapMM)));
   return { cols, rows, count: cols * rows };
 }
 
 /* -------------------------------------------------------- rendering --- */
 
 const outputCanvas = el("output-canvas");
+const outputEmpty = el("output-empty");
 const gridSummary = el("grid-summary");
+const downloadPdfButton = el("btn-download-pdf");
+const downloadJpegButton = el("btn-download-jpeg");
 
 function rebuildOutput() {
   if (!state.image) return;
   state.croppedCanvas = buildCroppedCanvas();
+  outputEmpty.hidden = true;
+  outputCanvas.hidden = false;
   const grid = computeGrid();
-  gridSummary.textContent =
-    `${grid.cols} × ${grid.rows} = ${grid.count} photo${grid.count === 1 ? "" : "s"} per ${paperLabel()} sheet.`;
+  const hasRoom = grid.count > 0;
+  downloadPdfButton.disabled = !hasRoom;
+  downloadJpegButton.disabled = false;
+  gridSummary.textContent = hasRoom
+    ? `${grid.cols} × ${grid.rows} = ${grid.count} photo${grid.count === 1 ? "" : "s"} per ${paperLabel()} sheet.`
+    : "This photo does not fit within the selected paper and margins. Choose larger paper or smaller margins.";
+  gridSummary.className = "grid-summary" + (hasRoom ? "" : " warn");
   drawOutputPreview(grid);
 }
 
 function paperLabel() {
-  return paperSelect.selectedOptions[0].textContent;
+  return paperSelect.value === "custom"
+    ? `${state.paper.w} × ${state.paper.h} mm`
+    : paperSelect.selectedOptions[0].textContent;
 }
 
 function drawOutputPreview(grid) {
@@ -349,7 +390,7 @@ function drawOutputPreview(grid) {
 
 /* --------------------------------------------------------- exports ----- */
 
-el("btn-download-pdf").addEventListener("click", () => {
+downloadPdfButton.addEventListener("click", () => {
   if (!state.croppedCanvas) return;
   const { jsPDF } = window.jspdf;
   const grid = computeGrid();
@@ -377,7 +418,7 @@ el("btn-download-pdf").addEventListener("click", () => {
   doc.save(`passgrid-${preset.id}-${state.paper.w}x${state.paper.h}mm.pdf`);
 });
 
-el("btn-download-jpeg").addEventListener("click", () => {
+downloadJpegButton.addEventListener("click", () => {
   if (!state.croppedCanvas) return;
   const link = document.createElement("a");
   link.download = `passgrid-${state.selectedPreset.id}-photo.jpg`;

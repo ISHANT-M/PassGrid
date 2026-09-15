@@ -40,7 +40,7 @@
         Fix and enhance photo (brightness, contrast, sharpness)
       </label>
     </div>
-    <p class="status-line" id="detect-status"></p>
+    <p class="status-line" id="detect-status" aria-live="polite"></p>
   </section>
 
   <!-- STEP 2: SIZE -->
@@ -67,6 +67,7 @@
           <option value="A4" data-w="210" data-h="297" selected>A4</option>
           <option value="letter" data-w="215.9" data-h="279.4">US Letter</option>
           <option value="5x7" data-w="127" data-h="177.8">5×7 in</option>
+          <option value="custom" hidden>Custom</option>
         </select>
       </label>
       <label>Margin
@@ -74,6 +75,7 @@
           <option value="5">Narrow (5mm)</option>
           <option value="10" selected>Normal (10mm)</option>
           <option value="15">Wide (15mm)</option>
+          <option value="custom" hidden>Custom</option>
         </select>
       </label>
       <label>Spacing between photos
@@ -81,6 +83,7 @@
           <option value="0">None</option>
           <option value="2" selected>2mm</option>
           <option value="4">4mm</option>
+          <option value="custom" hidden>Custom</option>
         </select>
       </label>
     </div>
@@ -88,35 +91,63 @@
       <input type="checkbox" id="toggle-guides" checked />
       Show cut guide lines around each photo
     </label>
-    <p class="grid-summary" id="grid-summary"></p>
+    <details class="custom-size">
+      <summary>Use a custom paper size or spacing</summary>
+      <div class="row custom-paper-fields">
+        <label>Paper width <input type="number" id="custom-paper-w" min="20" step="0.1" value="210" /> mm</label>
+        <label>Paper height <input type="number" id="custom-paper-h" min="20" step="0.1" value="297" /> mm</label>
+        <label>Margin <input type="number" id="custom-margin" min="0" step="0.1" value="10" /> mm</label>
+        <label>Spacing <input type="number" id="custom-gap" min="0" step="0.1" value="2" /> mm</label>
+        <button class="btn-secondary" id="btn-apply-paper-custom">Use this layout</button>
+      </div>
+      <p class="field-message" id="paper-custom-status" aria-live="polite"></p>
+    </details>
+    <p class="grid-summary" id="grid-summary" aria-live="polite"></p>
   </section>
 
-  <!-- Ad slot: a single, static banner. See PRIVATE_NOTES.md for how to
-       wire up a real ad network here without making the tool annoying. -->
-  <div class="ad-slot">
-    <div class="ad-slot-inner" id="ad-slot">
-      <span class="ad-slot-label">Sponsored</span>
-      <span id="ad-slot-content">Ad space — replace this block with your ad network's snippet.</span>
-    </div>
-  </div>
 
   <!-- STEP 4: PREVIEW + EXPORT -->
   <section class="panel" id="panel-output">
     <h2><span class="step-num">4</span> Preview and download</h2>
     <div class="output-wrap">
-      <canvas id="output-canvas"></canvas>
+      <p class="output-empty" id="output-empty">Upload a photo to preview your printable sheet.</p>
+      <canvas id="output-canvas" hidden></canvas>
     </div>
     <div class="row export-row">
-      <button class="btn-primary" id="btn-download-pdf">Download PDF grid</button>
-      <button class="btn-secondary" id="btn-download-jpeg">Download single photo (JPEG)</button>
+      <button class="btn-primary" id="btn-download-pdf" disabled>Download PDF grid</button>
+      <button class="btn-secondary" id="btn-download-jpeg" disabled>Download single photo (JPEG)</button>
     </div>
+  </section>
+
+  <section class="info-section" aria-labelledby="how-it-works-title">
+    <h2 id="how-it-works-title">Simple, private, print-ready</h2>
+    <div class="info-grid">
+      <div>
+        <h3>1. Process locally</h3>
+        <p>Your photo stays on your device. Face detection, cropping, and enhancement happen in this browser.</p>
+      </div>
+      <div>
+        <h3>2. Size accurately</h3>
+        <p>Choose a country preset or custom dimensions. PassGrid prepares the crop at 300 DPI.</p>
+      </div>
+      <div>
+        <h3>3. Print efficiently</h3>
+        <p>The layout fits as many copies as possible on your selected paper, with optional cut guides.</p>
+      </div>
+    </div>
+    <p class="print-note"><strong>Before printing:</strong> choose “Actual size” or “100%” in the print dialog. Passport rules can also cover background, expression, and clothing, so check the official requirements for your application.</p>
   </section>
 
 </main>
 
 <footer class="site-footer">
-  <p>All processing happens in your browser. Nothing you upload is sent anywhere.</p>
-  <p>Developed by Ishant Mehndiratta — <a href="https://github.com/ISHANT-M" target="_blank" rel="noopener">github.com/ISHANT-M</a></p>
+  <nav class="footer-nav" aria-label="Footer">
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="https://github.com/ISHANT-M/PassGrid" target="_blank" rel="noopener">Source code</a>
+  </nav>
+  <p>All photo processing happens in your browser. Your image is never uploaded by PassGrid.</p>
+  <p>Developed by Ishant Mehndiratta.</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
