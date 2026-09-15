@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Private project notes
+PRIVATE_NOTES.md
+
+# OS metadata
+.DS_Store
