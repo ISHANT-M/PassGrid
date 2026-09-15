@@ -51,8 +51,10 @@ browsers, so a local server is recommended over double-clicking the file.
 ## Project structure
 
 ```
-index.html      Page structure and layout
-styles.css      All styling
+index.html      Main tool and supporting guidance
+about.html      Project explanation and printing guidance
+privacy.html    Privacy and third-party service disclosures
+styles.css      Shared responsive styling
 app.js          Upload, face detection, cropping, grid layout, PDF/JPEG export
 assets/         Favicon and logo (SVG)
 ```
