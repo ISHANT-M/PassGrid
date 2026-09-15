@@ -57,26 +57,6 @@ app.js          Upload, face detection, cropping, grid layout, PDF/JPEG export
 assets/         Favicon and logo (SVG)
 ```
 
-## Deployment
-
-This is a static site, so it can be hosted for free on any static hosting
-provider. A few options:
-
-- **GitHub Pages** — push this repo to GitHub, then enable Pages in the
-  repository settings (Settings > Pages > Deploy from branch > main).
-  The site will be live at `https://ISHANT-M.github.io/passgrid`.
-- **Netlify** — drag and drop the project folder onto
-  [app.netlify.com/drop](https://app.netlify.com/drop), or connect the
-  GitHub repo for automatic redeploys on every push.
-- **Vercel** — import the GitHub repo at [vercel.com/new](https://vercel.com/new)
-  and deploy with the default static settings.
-- **Cloudflare Pages** — connect the repo at
-  [pages.cloudflare.com](https://pages.cloudflare.com); no build command
-  needed since there's nothing to compile.
-
-Any of these work well for a static, no-backend project like this one.
-GitHub Pages is the simplest if the code is already going to live on
-GitHub.
 
 ## Limitations
 
@@ -88,6 +68,10 @@ GitHub.
   guarantee compliance with every country's official passport photo rules
   (background color, headwear rules, expression, etc). Check your country's
   requirements before submitting a printed photo.
+
+## License
+
+Licensed under the [MIT License](LICENSE).
 
 ## Credits
 
