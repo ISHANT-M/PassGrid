@@ -121,23 +121,22 @@
     </div>
   </section>
 
-  <!-- Non-intrusive ad placement. Replace only the element with id
-       "passgrid-ad-placeholder" with the approved Google AdSense ad unit. -->
+  <!-- ADSENSE DISPLAY UNIT DISABLED DURING SITE REVIEW.
+  The site-level Google AdSense identifier remains in <head> for verification.
+  Restore this block only after the site is approved; see PRIVATE_NOTES.md.
   <aside class="ad-placement" aria-label="Advertisement">
     <span class="ad-label">Advertisement</span>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5633765349056008"
-     crossorigin="anonymous"></script>
-<!-- passgrid-banner -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5633765349056008"
-     data-ad-slot="4199977686"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5633765349056008"
+         data-ad-slot="4199977686"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </aside>
+  -->
 
   <section class="info-section" aria-labelledby="how-it-works-title">
     <h2 id="how-it-works-title">Simple, private, print-ready</h2>
@@ -169,6 +168,11 @@
   <p>All photo processing happens in your browser. Your image is never uploaded by PassGrid.</p>
   <p>Developed by Ishant Mehndiratta.</p>
 </footer>
+
+<aside class="cookie-notice" id="cookie-notice" aria-label="Privacy notice" hidden>
+  <p>PassGrid uses third-party services, including Google AdSense for site verification, which may access or store device information. Display ads are currently disabled. <a href="privacy.html">Read the privacy notice</a>.</p>
+  <button class="btn-primary" id="btn-cookie-notice">Understood</button>
+</aside>
 
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

@@ -269,6 +269,28 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 .article-content .lede{font-size:1rem; color:var(--ink);}
 .policy-date{font-size:0.82rem !important;}
 
+/* Privacy notice */
+.cookie-notice{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  left:16px;
+  z-index:10;
+  max-width:700px;
+  margin:0 auto;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow:0 4px 20px rgba(26,33,48,0.16);
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:14px 16px;
+}
+.cookie-notice p{margin:0; color:var(--ink-soft); font-size:0.82rem;}
+.cookie-notice a{color:var(--navy);}
+.cookie-notice button{flex:0 0 auto;}
+
 /* Footer */
 .site-footer{
   max-width:760px;
@@ -294,4 +316,6 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   .row input[type=number], select{width:100%; min-height:44px;}
   .custom-size .row .btn-secondary{width:100%;}
   .export-row button{width:100%; min-height:44px;}
+  .cookie-notice{align-items:stretch; flex-direction:column; gap:10px;}
+  .cookie-notice button{width:100%; min-height:44px;}
 }
