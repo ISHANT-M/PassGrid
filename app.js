@@ -26,6 +26,28 @@ const state = {
 
 const el = id => document.getElementById(id);
 
+/* --------------------------------------------------- privacy notice ---- */
+
+const cookieNotice = el("cookie-notice");
+const cookieNoticeButton = el("btn-cookie-notice");
+if (cookieNotice && cookieNoticeButton) {
+  let acknowledged = false;
+  try {
+    acknowledged = localStorage.getItem("passgrid-privacy-notice") === "acknowledged";
+  } catch (_) {
+    // Storage can be unavailable in strict privacy modes; show the notice.
+  }
+  cookieNotice.hidden = acknowledged;
+  cookieNoticeButton.addEventListener("click", () => {
+    cookieNotice.hidden = true;
+    try {
+      localStorage.setItem("passgrid-privacy-notice", "acknowledged");
+    } catch (_) {
+      // Dismiss for this page view even when storage is unavailable.
+    }
+  });
+}
+
 /* ---------------------------------------------------------- upload ---- */
 
 const dropzone = el("dropzone");
